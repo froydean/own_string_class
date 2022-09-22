@@ -1,0 +1,16 @@
+﻿################################################################################
+# Данный GITIGNORE-файл был автоматически создан Microsoft(R) Visual Studio.
+################################################################################
+
+/my_string_class_msvs_prjct.sln
+/x64/Debug
+/my_string_class_msvs_prjct/x64/Debug
+/my_string_class_msvs_prjct/my_string_class_msvs_prjct.vcxproj
+/my_string_class_msvs_prjct/my_string_class_msvs_prjct.vcxproj.filters
+/my_string_class_msvs_prjct/my_string_class_msvs_prjct.vcxproj.user
+/my_string_class_msvs_prjct/.vs/VSWorkspaceState.json
+/my_string_class_msvs_prjct/.vs/slnx.sqlite
+/my_string_class_msvs_prjct/.vs/ProjectSettings.json
+/my_string_class_msvs_prjct/.vs/my_string_class_msvs_prjct/v17
+/my_string_class_msvs_prjct/.vs/my_string_class_msvs_prjct/FileContentIndex
+/.vs/my_string_class_msvs_prjct
