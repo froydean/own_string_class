@@ -1,22 +1,12 @@
+﻿//This program implements my own class MyString for working with string avoiding STL library
+//This file run all tests
+//stan bangtan sonyeondan
 #include "my_string_class_header.h"
-using namespace std;
-
-class MyString {
-public:
-	MyString() {
-		ch = 'H';
-	}
-	MyString(char sym) {
-		ch = sym;
-	}
-	char  ch;
-};
 
 int main() {
-	MyString a;
-	a.ch = 'A';
-	MyString b('G');
-	MyString c;
-	cout << a.ch <<b.ch<<c.ch<< endl;
+	setlocale(LC_ALL, "");
+
+	run_tests_for_constructors();
+	
 	return 0;
 }
