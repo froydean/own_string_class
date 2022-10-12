@@ -14,6 +14,12 @@ private:
 	char* head_string;
 	size_t string_length;
 
+	void set_fields_to_zero();
+	bool check_for_max_neg_input(int count);
+	void holy_trinity_init(char* str, size_t len);
+	void clear_inner();
+	bool same_string(const char* str);
+
 public:
 
 	MyString();
@@ -25,11 +31,6 @@ public:
 	MyString(const MyString & other);
 
 	~MyString();
-
-	void print_debug_info();
-	void set_fields_to_zero();
-	bool check_for_max_neg_input(int count);
-	void holy_trinity_init(char* str, size_t len);
 
 	MyString operator+(const MyString & other);
 	MyString operator+(const char* user_string);
@@ -57,7 +58,6 @@ public:
 	
 	void shrink_to_fit();
 	void clear();
-	void clear2();
 
 	friend ostream& operator<<(ostream& out, MyString & current_obj);
 	friend istream& operator>>(istream& in, MyString & current_obj);
@@ -86,9 +86,8 @@ public:
 	int find(const char* user_string, int index);
 	int find(string user_string);
 	int find(string user_string, int index);
-
-	bool same_string(const char* str);
 	
+	void print_debug_info();
 };
 
 void run_tests_for_constructors();

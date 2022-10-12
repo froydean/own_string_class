@@ -7,7 +7,7 @@ void run_tests_for_constructors(){
 	
 	//deafault constructor
 	MyString string_no_args;
-	string_no_args.print_debug_info();
+	cout << string_no_args << endl;
 	
 	char_array_test();
 	init_list_test();
@@ -19,30 +19,30 @@ void run_tests_for_constructors(){
 
 void char_array_test() {
 	MyString test0_string(NULL);
-	test0_string.print_debug_info();
+	cout << test0_string << endl;
 	MyString test1_string("Hello World!");
-	test1_string.print_debug_info();
+	cout << test1_string << endl;
 	MyString test2_string("");
-	test2_string.print_debug_info();
+	cout << test2_string << endl;
 	MyString test3_string("-");
-	test3_string.print_debug_info();
+	cout << test3_string << endl;
 	//other languages
 	MyString test4_string("世界");
-	test4_string.print_debug_info();
+	cout << test4_string << endl;
 	MyString test5_string("Привет how do you do my fellow kids");
-	test5_string.print_debug_info();
+	cout << test5_string << endl;
 	//what if longer
 	MyString test6_string("It's gonna be LEGEN--waitforitwaitforitwaitforitwaitforitwait\
 						foritwaitforitwaitforitwaitforitwaitforitwaitforitwaitforitwaitfor\
 						itwaitforitwaitforitwaitforitwaitforitwaitforitwaitforit--DARY!!!");
-	test6_string.print_debug_info();
+	cout << test6_string << endl;
 	MyString test7_string("lawy\te\nre\0d!");
-	test7_string.print_debug_info();
+	cout << test7_string << endl;
 }
 
 void init_list_test() {
 	MyString test1_string({ 'l', 'i','s','t' });
-	test1_string.print_debug_info();
+	cout << test1_string << endl;
 	MyString test2_string({ 'l', 'i','s','t','\0','e','n'});
 	test2_string.print_debug_info();
 	MyString test3_string({});
@@ -58,8 +58,8 @@ void init_list_test() {
 	test7_string.print_debug_info();
 	MyString test8_string({ 'b', '\t','a','\n','z', 'i', 'n', 'g', 'a'});
 	test8_string.print_debug_info();
-	MyString test9_string({ NULL });
-	test9_string.print_debug_info();
+	//MyString test9_string({ NULL });
+	//test9_string.print_debug_info();
 }
 
 void std_string_test() {
