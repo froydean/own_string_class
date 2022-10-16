@@ -415,20 +415,19 @@ void MyString::replace(const int index, const int count, string user_string) {
 }
 
 MyString MyString::substr(const int index) const {
-	if (index >= 0) {
-		MyString tmp;
-		tmp = *this;
-		tmp.erase(0, index);
-		tmp.shrink_to_fit();
-		return tmp;
-	}
-	else {
-		cout << "Negative arguments not allowed." << endl;
-	}
+	return this->substr(index, this->string_length - index);
 }
 
 MyString MyString::substr(const int index, const int count) const {
-	if (index >= 0) {
+	if (index >= 0 && count>0) {
+		if (count == 0) {
+			cout << "One element should be substracted at least." << endl;
+			return NULL;
+		}
+		if (count > this->string_length - index) {
+			cout << "Count of substracted elements is out of range." << endl;
+			return NULL;
+		}
 		MyString tmp;
 		tmp = *this;
 		tmp.erase(0, index);
@@ -438,6 +437,7 @@ MyString MyString::substr(const int index, const int count) const {
 	}
 	else {
 		cout << "Negative arguments not allowed." << endl;
+		return NULL;
 	}
 }
 
