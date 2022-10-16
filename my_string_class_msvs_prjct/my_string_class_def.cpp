@@ -121,22 +121,7 @@ MyString MyString::operator+(string user_string) const {
 }
 
 void MyString::operator+=(const char* user_string) {
-	if (user_string == NULL) return;
-	if (this->head_string) {
-		this->string_length += strlen(user_string);;
-		if (this->head_string = (char*)realloc(this->head_string, (this->string_length + 1) * sizeof(char))) {
-			strcat(this->head_string, user_string);
-		}
-		else {
-			cout << "Memory allocation failed." << endl;
-			set_fields_to_zero();
-		}
-	}
-	else {
-		if (user_string) {
-			holy_trinity_init((char*)user_string, strlen(user_string));
-		}
-	}
+	this->append(user_string);
 }
 
 void MyString::operator+=(string user_string) {
