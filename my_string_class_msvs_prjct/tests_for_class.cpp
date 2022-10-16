@@ -102,7 +102,7 @@ void char_n_array_test() {
 	MyString test8_string("Queen", 9);
 	cout << test8_string << endl;
 #if DEBUG_WITH_LIMITS
-	MyString test9_string("Queen", INT_MAX - 1);
+	MyString test9_string("Queen", UINT_MAX - 1);
 	cout << test9_string << endl;
 #endif
 	//won't compile
@@ -128,7 +128,7 @@ void n_chars_test() {
 	MyString test8_string(INT_MAX, 'F');
 	cout << test8_string << endl;
 #if DEBUG_WITH_LIMITS
-	MyString test9_string(INT_MAX-1, 'F');
+	MyString test9_string(UINT_MAX-1, 'F');
 	cout << test9_string << endl;
 #endif
 }
