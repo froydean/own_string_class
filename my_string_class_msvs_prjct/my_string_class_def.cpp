@@ -12,32 +12,16 @@ MyString::MyString() {
 	this->string_length = 0;
 }
 
-MyString::MyString(const char* user_string) {
-	if (user_string) {
-		holy_trinity_init((char*)user_string, strlen(user_string));
-	}
-	else {
-		set_fields_to_zero();
-	}
+MyString::MyString(const char* user_string) : MyString(user_string, strlen(user_string)) {
 }
 
-MyString::MyString(initializer_list <char> str_as_list) {
-	//protection against \0 sym in the middle of the list
-	char* tmp = new char[str_as_list.size() + 1];
-	copy(str_as_list.begin(), str_as_list.end(), tmp);
-	tmp[str_as_list.size()] = '\0';
-	holy_trinity_init(tmp, strlen(tmp));
-	delete[] tmp;
+MyString::MyString(const initializer_list <char> str_as_list) : MyString(string(str_as_list)) {
 }
 
-MyString::MyString(string user_string) {
-	this->string_length = user_string.length();
-	this->head_string = new char[(this->string_length) + 1];
-	user_string.copy(this->head_string, user_string.length(), 0);
-	this->head_string[this->string_length] = '\0';
+MyString::MyString(string user_string) : MyString(user_string.c_str()) {
 }
 
-MyString::MyString(const char* user_string, int count) {
+MyString::MyString(const char* user_string, const int count) {
 	if (check_for_max_neg_input(count)) return;
 	if (user_string == NULL) {
 		set_fields_to_zero();
@@ -51,23 +35,7 @@ MyString::MyString(const char* user_string, int count) {
 	delete[] tmp;	
 }
 
-MyString::MyString(int count, char one_char) {
-	if (check_for_max_neg_input(count)) return;
-	//protection against \0 sym
-	if (one_char) {
-		this->string_length = count;
-		this->head_string = new char[count + 1];
-		for (int i = 0; i < count; i++) {
-			this->head_string[i] = one_char;
-		}
-		this->head_string[count] = '\0';
-	}
-	else {
-		this->string_length = 0;
-		this->head_string = new char[(this->string_length) + 1];
-		this->head_string[0] = '\0';
-	}
-	
+MyString::MyString(const int count, const char one_char) : MyString (string(count, one_char)) {
 }
 
 MyString::MyString(const MyString& other) {
@@ -85,23 +53,13 @@ MyString::~MyString() {
 	this->string_length = 0;
 }
 
-void MyString::print_debug_info() {
-	if (this->head_string) {
-		cout << "String goes: " << this->head_string << endl;
-		cout << "Length is: " << this->string_length << endl;
-	}
-	else {
-		cout << "String has null pointer." << endl;
-	}
-}
-
 //do all help funcs private/protected
 void MyString::set_fields_to_zero() {
 	this->head_string = NULL;
 	this->string_length = 0;
 }
 
-bool MyString::check_for_max_neg_input(int count) {
+bool MyString::check_for_max_neg_input(const int count) {
 	//protection against neagtive string size
 	if (count < 0) {
 		cout << "String with negative size can't be created." << endl;
@@ -117,29 +75,31 @@ bool MyString::check_for_max_neg_input(int count) {
 	return 0; //all ok
 }
 
-void MyString::holy_trinity_init(char* str, size_t len) {
+void MyString::holy_trinity_init(const char* str, const size_t len) {
 	this->string_length = len;
 	this->head_string = new char[len + 1];
 	strcpy(this->head_string, str);
 }
 
-MyString MyString::operator+(const MyString& other) {
-	if (other.head_string == NULL)return *this;
-	MyString tmp;
-	if (this->head_string) {
-		tmp.string_length = this->string_length + other.string_length;
-		tmp.head_string = new char[tmp.string_length + 1];
-		strcpy(tmp.head_string, this->head_string);
-		strcat(tmp.head_string, other.head_string);
-	}else{
-		tmp.string_length = other.string_length;
-		tmp.head_string = new char[tmp.string_length + 1];
-		strcpy(tmp.head_string, other.head_string);
+bool MyString::same_string(const char* str) const {
+	for (int i = 0; i < this->string_length; i++) {
+		if (this->head_string[i] != str[i])
+			return false;
 	}
-	return tmp;
+	return true;
 }
 
-MyString MyString::operator+(const char* user_string) {
+void MyString::clear_inner() {
+	delete[] this->head_string;
+	this->head_string = NULL;
+	this->string_length = 0;
+}
+
+MyString MyString::operator+(const MyString& other) const {
+	return this->operator+(other.head_string);
+}
+
+MyString MyString::operator+(const char* user_string) const {
 	if (user_string == NULL) return *this;
 	MyString tmp;
 	if (this->head_string) {
@@ -156,23 +116,8 @@ MyString MyString::operator+(const char* user_string) {
 	return tmp;
 }
 
-MyString MyString::operator+(string user_string) {
+MyString MyString::operator+(string user_string) const {
 	return operator+(user_string.c_str());
-	//MyString tmp;
-	//if (this->head_string) {
-	//	tmp.string_length = this->string_length + user_string.length();
-	//	tmp.head_string = new char[tmp.string_length + 1];
-	//	strncpy(tmp.head_string, this->head_string, this->string_length);
-	//	user_string.copy(&tmp.head_string[this->string_length], user_string.length(), 0);
-	//	tmp.head_string[tmp.string_length] = '\0';
-	//}
-	//else {
-	//	tmp.string_length = user_string.length();
-	//	tmp.head_string = new char[tmp.string_length + 1];
-	//	user_string.copy(&tmp.head_string[0], user_string.length(), 0);
-	//	tmp.head_string[tmp.string_length] = '\0';
-	//}
-	//return tmp;
 }
 
 void MyString::operator+=(const char* user_string) {
@@ -215,27 +160,15 @@ void MyString::operator=(string user_string) {
 }
 
 void MyString::operator=(char sym) {
-	if (sym == NULL) return;
-	if (this->head_string) {
-		clear_inner();
-	}
-	holy_trinity_init(&sym, 1);
+	this->operator=(string(1, sym));
 }
 
 void MyString::operator=(const MyString& other) {
-	if (this->head_string) {
-		clear_inner();
-	}
-	if (other.head_string) {
-		holy_trinity_init((char*)other.head_string, strlen(other.head_string));
-	}
-	else {
-		set_fields_to_zero();
-	}
+	this->operator+(other.head_string);
 }
 
 //returns NULL if unsuccessfull
-char MyString::operator[](int index) {
+char MyString::operator[](const int index) const {
 	if (index < 0) {
 		cout << "Negative index unacceptable." << endl;
 		return NULL;
@@ -249,7 +182,7 @@ char MyString::operator[](int index) {
 }
 
 //thin about -1 as a result
-bool MyString::operator> (const MyString & other) {
+bool MyString::operator> (const MyString & other) const {
 	if (this->head_string && other.head_string) {
 		return !operator<=(other);
 	}
@@ -259,7 +192,7 @@ bool MyString::operator> (const MyString & other) {
 	}
 }
 
-bool MyString::operator< (const MyString & other) {
+bool MyString::operator< (const MyString & other) const {
 	if (this->head_string && other.head_string) {
 		return !operator>=(other);
 	}
@@ -269,7 +202,7 @@ bool MyString::operator< (const MyString & other) {
 	}
 }
 
-bool MyString::operator>= (const MyString & other) {
+bool MyString::operator>= (const MyString & other) const {
 	if (this->head_string && other.head_string) {
 		for (int i = 0; i < other.string_length; i++) {
 			if (this->head_string[i] < other.head_string[i]) return false;
@@ -282,7 +215,7 @@ bool MyString::operator>= (const MyString & other) {
 	}
 }
 
-bool MyString::operator<= (const MyString & other) {
+bool MyString::operator<= (const MyString & other) const {
 	if (this->head_string && other.head_string) {
 		for (int i = 0; i < this->string_length; i++) {
 			if (this->head_string[i] > other.head_string[i]) return false;
@@ -295,7 +228,7 @@ bool MyString::operator<= (const MyString & other) {
 	}
 }
 
-bool MyString::operator!= (const MyString & other) {
+bool MyString::operator!= (const MyString & other) const {
 	if (this->head_string && other.head_string) {
 		return !operator==(other);
 	}
@@ -305,7 +238,7 @@ bool MyString::operator!= (const MyString & other) {
 	}
 }
 
-bool MyString::operator== (const MyString & other) {
+bool MyString::operator== (const MyString & other) const {
 	if (this->head_string && other.head_string) {
 		if (this->string_length != other.string_length) return false;
 		for (int i = 0; i < other.string_length; i++)
@@ -319,28 +252,28 @@ bool MyString::operator== (const MyString & other) {
 	}
 }
 
-char* MyString::c_str() {
+char* MyString::c_str() const {
 	return this->head_string;
 }
 
-char* MyString::data() {
+char* MyString::data() const {
 	return this->head_string;
 }
 
-size_t MyString::length() {
+size_t MyString::length() const {
 	return this->string_length;
 }
 
-size_t MyString::size() {
+size_t MyString::size() const {
 	return this->string_length;
 }
 
-bool MyString::empty() {
+bool MyString::empty() const {
 	if (this->string_length) return false;
 	return true;
 }
 
-size_t MyString::capacity() {
+size_t MyString::capacity() const {
 	//return this->string_length+1; //or do field capacity
 	//0 means bad ptr
 	if (this->head_string) {
@@ -359,17 +292,10 @@ void MyString::shrink_to_fit() {
 	this->head_string[this->string_length] = '\0';
 }
 
-void MyString::clear_inner() {
-	delete[] this->head_string;
-	this->head_string = NULL;
-	this->string_length = 0;
-}
-
 void MyString::clear() {
 	strcpy(this->head_string, "\0");
 	this->string_length = 0;
 }
-
 
 ostream& operator<<(ostream & out, MyString & current_obj){
 	if (current_obj.head_string) {
@@ -388,70 +314,15 @@ istream& operator>>(istream& in, MyString & current_obj){
 	return in;
 }
 
-void MyString::insert(int index, int count, char sym) {
-	if (index>=0 && count>=0) {
-		if (count == 0) return;
-		if (index > this->string_length) {
-			cout << "Index is out of range" << endl;
-			return;
-		}
-		if (sym == '/0') {
-			//change to erase
-			char* buf = new char[index + 1];
-			strncpy(buf, this->head_string, index);
-			buf[index] = '\0';
-			*this = (const char*)buf;
-			delete[] buf;
-			return;
-		}
-		char* buf = new char[this->string_length + count + 1];
-		strncpy(buf, this->head_string, index);
-		for (int i = index; i < count + index; i++) {
-			buf[i] = sym;
-		}
-		memcpy((buf + index + count), (this->head_string + index), (this->string_length - index));
-		buf[this->string_length + count] = '\0';
-		*this = (const char*)buf;
-		delete[] buf;
-	}
-	else {
-		cout << "Negative arguments not allowed." << endl;
-	}
+void MyString::insert(const int index, const int count, const char sym) {
+	insert(index, string(count, sym));
 }
 
-void MyString::insert(int index, const char* user_string) {
-	if (index >= 0) {
-		if (user_string == NULL || user_string == "") return;
-		if (index > this->string_length) {
-			cout << "Index is out of range" << endl;
-			return;
-		}
-		if (user_string == "/0") {
-			//change to erase
-			char* buf = new char[index+1];
-			strncpy(buf, this->head_string, index);
-			buf[index] = '\0';
-			*this = (const char*)buf;
-			delete[] buf;
-			return;
-		}
-		int count = strlen(user_string);
-		char* buf = new char[this->string_length + count + 1];
-		strncpy(buf, this->head_string, index);
-		for (int i = index, k = 0; i < count + index; i++, k++) {
-			buf[i] = user_string[k];
-		}
-		memcpy((buf + index + count), (this->head_string + index), (this->string_length - index));
-		buf[this->string_length + count] = '\0';
-		*this = (const char*)buf;
-		delete[] buf;
-	}
-	else {
-		cout << "Negative arguments not allowed." << endl;
-	}
+void MyString::insert(const int index, const char* user_string) {
+	insert(index, user_string, strlen(user_string));
 }
 
-void MyString::insert(int index, const char* user_string, int count) {
+void MyString::insert(const int index, const char* user_string, const int count) {
 	if (index >= 0 && count >=0) {
 		if (user_string == NULL || user_string == "" || count == 0) return;
 		if (index > this->string_length) {
@@ -482,15 +353,15 @@ void MyString::insert(int index, const char* user_string, int count) {
 	}
 }
 
-void MyString::insert(int index, string user_string) {
+void MyString::insert(const int index, string user_string) {
 	insert(index, user_string.c_str());
 }
 
-void MyString::insert(int index, string user_string, int count) {
+void MyString::insert(const int index, string user_string, const int count) {
 	insert(index, user_string.c_str(), count);
 }
 
-void MyString::erase(int index, int count) {
+void MyString::erase(const int index, const int count) {
 	if (index >= 0 && count >= 0) {
 		if (count == 0)return;
 		if (index >= this->string_length) { //NOTE: >=!!!
@@ -512,7 +383,7 @@ void MyString::erase(int index, int count) {
 	
 }
 
-void MyString::append(int count, char sym) {
+void MyString::append(const int count, const char sym) {
 	insert(this->string_length, count, sym);
 }
 
@@ -521,7 +392,7 @@ void MyString::append(const char* user_string) {
 
 }
 
-void MyString::append(const char* user_string, int index, int count) {
+void MyString::append(const char* user_string, const int index, const int count) {
 	insert(this->string_length, user_string+index, count);
 }
 
@@ -529,21 +400,21 @@ void MyString::append(string user_string) {
 	insert(this->string_length, user_string);
 }
 
-void MyString::append(string user_string, int index, int count) {
+void MyString::append(string user_string, const int index, const int count) {
 	insert(this->string_length, (user_string.c_str()+index), count);
 }
 
-void MyString::replace(int index, int count, const char* user_string) {
+void MyString::replace(const int index, const int count, const char* user_string) {
 	erase(index, count);
 	insert(index, user_string);
 }
 
-void MyString::replace(int index, int count, string user_string) {
+void MyString::replace(const int index, const int count, string user_string) {
 	erase(index, count);
 	insert(index, user_string);
 }
 
-MyString MyString::substr(int index) {
+MyString MyString::substr(const int index) const {
 	if (index >= 0) {
 		MyString tmp;
 		tmp = *this;
@@ -556,7 +427,7 @@ MyString MyString::substr(int index) {
 	}
 }
 
-MyString MyString::substr(int index, int count) {
+MyString MyString::substr(const int index, const int count) const {
 	if (index >= 0) {
 		MyString tmp;
 		tmp = *this;
@@ -570,28 +441,11 @@ MyString MyString::substr(int index, int count) {
 	}
 }
 
-
-bool MyString::same_string(const char* str){
-	for (int i = 0; i < this->string_length; i++) {
-		if (this->head_string[i] != str[i])
-			return false;
-	}
-	return true;
+int MyString::find(const char* user_string) const {
+	return find(user_string, 0);
 }
 
-int MyString::find(const char* user_string) {
-
-	size_t len = strlen(user_string);
-	for (int i = 0; i <= this->string_length - len; i++){
-		MyString tmp(this->substr(i, len));
-		if (tmp.same_string(user_string))
-			return i;
-	}
-	cout << "String not found." << endl;
-	return -1;
-}
-
-int MyString::find(const char* user_string, int index) {
+int MyString::find(const char* user_string, const int index) const {
 
 	if (index >= 0) {
 		size_t len = strlen(user_string);
@@ -613,10 +467,10 @@ int MyString::find(const char* user_string, int index) {
 
 }
 
-int MyString::find(string user_string) {
+int MyString::find(string user_string) const{
 	return find(user_string.c_str());
 }
 
-int MyString::find(string user_string, int index) {
+int MyString::find(string user_string, const int index) const{
 	return find(user_string.c_str(), index);
 }

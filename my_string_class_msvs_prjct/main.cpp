@@ -15,11 +15,6 @@ int main() {
 	//run_replace_tests();
 	//run_substr_tests();
 	//run_find_tests();
-
-	MyString a("sa;odkapokpeokfpeok");
-	cout << a << endl;
-	a = "a";
-	cout << a << endl;
 	
 	return 0;
 }

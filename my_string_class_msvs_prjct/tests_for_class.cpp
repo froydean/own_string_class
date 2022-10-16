@@ -44,20 +44,20 @@ void init_list_test() {
 	MyString test1_string({ 'l', 'i','s','t' });
 	cout << test1_string << endl;
 	MyString test2_string({ 'l', 'i','s','t','\0','e','n'});
-	test2_string.print_debug_info();
+	cout << test2_string << endl;
 	MyString test3_string({});
-	test3_string.print_debug_info();
+	cout << test3_string << endl;
 	MyString test4_string({ 44,127,24,97 });
-	test4_string.print_debug_info();
+	cout << test4_string << endl;
 	//won't compile
 	// MyString test5_string({ 'l', 'i','s','t', 2.0, 'nnnn'});
 	//test5_string.print_debug_info();
 	//MyString test6_string({ 4004,1217,2344,2450,765453});
 	//test6_string.print_debug_info();
 	MyString test7_string({'F'});
-	test7_string.print_debug_info();
+	cout << test7_string << endl;
 	MyString test8_string({ 'b', '\t','a','\n','z', 'i', 'n', 'g', 'a'});
-	test8_string.print_debug_info();
+	cout << test8_string << endl;
 	//MyString test9_string({ NULL });
 	//test9_string.print_debug_info();
 }
@@ -65,13 +65,13 @@ void init_list_test() {
 void std_string_test() {
 	string test_std_string1 = "Ahoi!";
 	MyString test1_string(test_std_string1);
-	test1_string.print_debug_info();
+	cout << test1_string << endl;
 	test_std_string1 = "";
 	MyString test2_string(test_std_string1);
-	test2_string.print_debug_info();
+	cout << test2_string << endl;
 	test_std_string1 = "A";
 	MyString test3_string(test_std_string1);
-	test3_string.print_debug_info();
+	cout << test3_string << endl;
 	//won't allow assignment zero to string calls exception
 	//string test_std_string2 = 0;
 	//MyString test4_string(test_std_string2);
@@ -81,29 +81,29 @@ void std_string_test() {
 	//test5_string.print_debug_info();
 	test_std_string1 = "bangtan\tsonyeon\0dan";
 	MyString test6_string(test_std_string1);
-	test6_string.print_debug_info();
+	cout << test6_string << endl;
 }
 
 void char_n_array_test() {
 	MyString test1_string("Queen Rihanna",8);
-	test1_string.print_debug_info();
+	cout << test1_string << endl;
 	MyString test2_string("Queen Rihanna", 0);
-	test2_string.print_debug_info();
+	cout << test2_string << endl;
 	MyString test3_string("", 4);
-	test3_string.print_debug_info();
+	cout << test3_string << endl;
 	MyString test4_string("", 0);
-	test4_string.print_debug_info();
+	cout << test4_string << endl;
 	MyString test5_string("Queen\0 Rihanna", 9);
-	test5_string.print_debug_info();
+	cout << test5_string << endl;
 	MyString test6_string("Queen", -9);
-	test6_string.print_debug_info();
+	cout << test6_string << endl;
 	MyString test7_string("Queen", INT_MAX);
-	test7_string.print_debug_info();
+	cout << test7_string << endl;
 	MyString test8_string("Queen", 9);
-	test8_string.print_debug_info();
+	cout << test8_string << endl;
 #if DEBUG_WITH_LIMITS
 	MyString test9_string("Queen", INT_MAX - 1);
-	test9_string.print_debug_info();
+	cout << test9_string << endl;
 #endif
 	//won't compile
 	//MyString test10_string(NULL, 9);
@@ -112,36 +112,36 @@ void char_n_array_test() {
 
 void n_chars_test() {
 	MyString test1_string(10, '!');
-	test1_string.print_debug_info();
+	cout << test1_string << endl;
 	MyString test2_string(40, 'http');
-	test2_string.print_debug_info();
+	cout << test2_string << endl;
 	MyString test3_string(14, '\t');
-	test3_string.print_debug_info();
+	cout << test3_string << endl;
 	MyString test4_string(10, '\n');
-	test4_string.print_debug_info();
+	cout << test4_string << endl;
 	MyString test5_string(0, 'F');
-	test5_string.print_debug_info();
+	cout << test5_string << endl;
 	MyString test6_string(-1, 'F');
-	test6_string.print_debug_info();
+	cout << test6_string << endl;
 	MyString test7_string(4, '\0');
-	test7_string.print_debug_info();
+	cout << test7_string << endl;
 	MyString test8_string(INT_MAX, 'F');
-	test8_string.print_debug_info();
+	cout << test8_string << endl;
 #if DEBUG_WITH_LIMITS
 	MyString test9_string(INT_MAX-1, 'F');
-	test9_string.print_debug_info();
+	cout << test9_string << endl;
 #endif
 }
 
 void copy_constr_test() {
 	MyString my_string_object1("Yet to come");
 	MyString test1_string(my_string_object1);
-	test1_string.print_debug_info();
+	cout << test1_string << endl;
 	MyString test2_string(test1_string);
-	test2_string.print_debug_info();
+	cout << test2_string << endl;
 	MyString my_string_object2;
 	MyString test3_string(my_string_object2);
-	test3_string.print_debug_info();
+	cout << test3_string << endl;
 }
 
 void run_tests_for_operators() {
@@ -155,81 +155,81 @@ void run_tests_for_operators() {
 void opertr_plus() {
 	MyString test1_string("Bangtan "), test2_string("Sonyeondan"), test3_string;
 	test3_string = test1_string + test2_string;
-	test3_string.print_debug_info();
+	cout << test3_string << endl;
 	MyString test4_string("Bangtan"), test5_string(""), test6_string;
 	test6_string = test4_string + test5_string;
-	test6_string.print_debug_info();
+	cout << test6_string << endl;
 	MyString test7_string(""), test8_string("Sonyeondan"), test9_string;
 	test9_string = test7_string + test8_string;
-	test9_string.print_debug_info();
+	cout << test9_string << endl;
 	MyString test10_string(""), test11_string(""), test12_string;
 	test12_string = test10_string + test11_string;
-	test12_string.print_debug_info();
+	cout << test12_string << endl;
 	MyString test13_string("\0"), test14_string("Sonyeandan"), test15_string;
 	test15_string = test13_string + test14_string;
-	test15_string.print_debug_info();
+	cout << test15_string << endl;
 	MyString test16_string("Bangtan"), test17_string("\0"), test18_string;
 	test18_string = test16_string + test17_string;
-	test18_string.print_debug_info();
+	cout << test18_string << endl;
 	MyString test19_string("\0"), test20_string("\0"), test21_string;
 	test21_string = test19_string + test20_string;
-	test21_string.print_debug_info();
+	cout << test21_string << endl;
 	MyString test22_string = ("Bangtan"), test23_string;
 	test23_string = test22_string + "Sonyendan";
-	test23_string.print_debug_info();
+	cout << test23_string << endl;
 	MyString test24_string = ("\0"), test25_string;
 	test25_string = test24_string + "annyeong\0haseyo";
-	test25_string.print_debug_info();
+	cout << test25_string << endl;
 	MyString test26_string = ("Nanyeun hagsenimnida"), test27_string;
 	string str = "!";
 	test27_string = test26_string + str;
-	test27_string.print_debug_info();
+	cout << test27_string << endl;
 	string str2 = "\0";
 	test27_string = test26_string + str2;
-	test27_string.print_debug_info();
+	cout << test27_string << endl;
 	MyString test28_string(NULL), test29_string(NULL), test30_string;
 	test30_string = test28_string + test29_string;
-	test30_string.print_debug_info();
+	cout << test30_string << endl;
 	MyString test31_string(NULL), test32_string("Hello!"), test33_string;
 	test33_string = test31_string + test32_string;
-	test33_string.print_debug_info();
+	cout << test33_string << endl;
 }
 
 void opertr_plus_equal() {
 	MyString test1_string("Ave");
 	test1_string += " Maria";
-	test1_string.print_debug_info();
+	cout << test1_string << endl;
 	test1_string += ", Gratia plena!";
-	test1_string.print_debug_info();
+	cout << test1_string << endl;
 	MyString test2_string;
 	test2_string += NULL;
-	test2_string.print_debug_info();
+	cout << test2_string << endl;
 	test2_string += "Dominus tecum";
-	test2_string.print_debug_info();
+	cout << test2_string << endl;
 	test2_string += "";
-	test2_string.print_debug_info();
+	cout << test2_string << endl;
 	test2_string += "\0";
-	test2_string.print_debug_info();
+	cout << test2_string << endl;
 	MyString test3_string("Ave");
 	//won't allow assignment zero to string calls exception
 	//string  str = NULL;
 	string  str = "\0";
 	test3_string += str;
-	test3_string.print_debug_info();
+	cout << test3_string << endl;
 	str = "";
 	test3_string += str;
-	test3_string.print_debug_info();
+	cout << test3_string << endl;
 	str = " Maria!";
 	test3_string += str;
-	test3_string.print_debug_info();
+	cout << test3_string << endl;
 	str = "\0";
 	test3_string += str;
-	test3_string.print_debug_info();
+	cout << test3_string << endl;
 	str = "Dominus tecum";
 	test3_string += str;
-	test3_string.print_debug_info();
+	cout << test3_string << endl;
 	test3_string += str;
-	test3_string.print_debug_info();
+	cout << test3_string << endl;
 }
 
 void opertr_equal() {
@@ -237,27 +237,27 @@ void opertr_equal() {
 	//won't compile
 	//test1_string = NULL;
 	test1_string = "Hello!";
-	test1_string.print_debug_info();
+	cout << test1_string << endl;
 	test1_string = "Annyeong!";
-	test1_string.print_debug_info();
+	cout << test1_string << endl;
 	test1_string = "\0";
-	test1_string.print_debug_info();
+	cout << test1_string << endl;
 	MyString test2_string("Ave!");
 	test2_string = "Maria!";
-	test2_string.print_debug_info();
+	cout << test2_string << endl;
 	string str = "Dominos!";
 	test2_string = str;
-	test2_string.print_debug_info();
+	cout << test2_string << endl;
 	string str2 = "";
 	test2_string = str2;
-	test2_string.print_debug_info();
+	cout << test2_string << endl;
 	MyString test3_string;
 	test3_string = '\0'; //null pointer
-	test3_string.print_debug_info();
+	cout << test3_string << endl;
 	test3_string = 'F';
-	test3_string.print_debug_info();
+	cout << test3_string << endl;
 	test3_string = 'NULL';
-	test3_string.print_debug_info();
+	cout << test3_string << endl;
 }
 
 void opertr_ind() {
