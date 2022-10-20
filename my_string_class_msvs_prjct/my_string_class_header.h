@@ -10,22 +10,20 @@ class MyString {
 
 private:
 
-	//ME: do i need do this const char?
 	char* head_string;
 	size_t string_length;
 
 	void set_fields_to_zero();
-	bool is_max_neg_input(const size_t count);
+	bool is_max_input(const size_t count);
 	void holy_trinity_init(const char* str, const size_t len);
 	void clear_inner();
-	bool same_string(const char* str) const;
 
 public:
 
 	MyString();
 	MyString(const char* user_string);
 	MyString(const initializer_list <char> str_as_list);
-	MyString(string user_string);
+	MyString(const string user_string);
 	MyString(const char* user_string, const size_t count);
 	MyString(const size_t count, const char one_char);
 	MyString(const MyString & other);
@@ -34,11 +32,11 @@ public:
 
 	MyString operator+(const MyString & other) const;
 	MyString operator+(const char* user_string) const;
-	MyString operator+(string user_string) const;
+	MyString operator+(const string user_string) const;
 	void operator+=(const char* user_string);
-	void operator+=(string user_string);
+	void operator+=(const string user_string);
 	void operator=(const char* user_string);
-	void operator=(string user_string);
+	void operator=(const string user_string);
 	void operator=(const char sym);
 	void operator=(const MyString & other);
 	char operator[](const size_t index) const;
@@ -65,27 +63,27 @@ public:
 	void insert(const size_t index, const size_t count, const char sym);
 	void insert(const size_t index, const char* user_string);
 	void insert(const size_t index, const char* user_string, const size_t count);
-	void insert(const size_t index, string user_string);
-	void insert(const size_t index, string user_string, const size_t count);
+	void insert(const size_t index, const string user_string);
+	void insert(const size_t index, const string user_string, const size_t count);
 
 	void erase(const size_t index, const size_t count);
 
 	void append(const size_t count, const char sym);
 	void append(const char* user_string);
 	void append(const char* user_string, const size_t index, const size_t count);
-	void append(string user_string);
-	void append(string user_string, const size_t index, const size_t count);
+	void append(const string user_string);
+	void append(const string user_string, const size_t index, const size_t count);
 
 	void replace(const size_t index, const size_t count, const char* user_string);
-	void replace(const size_t index, const size_t count, string user_string);
+	void replace(const size_t index, const size_t count, const string user_string);
 
 	MyString substr(const size_t index) const;
 	MyString substr(const size_t index, const size_t count) const;
 
 	size_t find(const char* user_string) const;
 	size_t find(const char* user_string, const size_t index) const;
-	size_t find(string user_string) const;
-	size_t find(string user_string, const size_t index) const;
+	size_t find(const string user_string) const;
+	size_t find(const string user_string, const size_t index) const;
 	
 };
 

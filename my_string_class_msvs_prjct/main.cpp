@@ -5,16 +5,5 @@
 
 int main() {
 	setlocale(LC_ALL, "");
-
-	//run_tests_for_constructors();
-	//run_tests_for_operators();
-	//run_single_tests();
-	//run_insert_tests();
-	//run_erase_tests();
-	//run_append_tests();
-	//run_replace_tests();
-	//run_substr_tests();
-	//run_find_tests();
-	
 	return 0;
 }

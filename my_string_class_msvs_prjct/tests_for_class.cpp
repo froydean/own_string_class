@@ -1,7 +1,7 @@
 ﻿//This file implements tests for each part and each method in it
 //Tests has been named by input data
+//not actual see UnitTest1.cpp
 #include "my_string_class_header.h"
-#define DEBUG_WITH_LIMITS 0
 
 void run_tests_for_constructors(){
 	
@@ -18,8 +18,8 @@ void run_tests_for_constructors(){
 }
 
 void char_array_test() {
-	MyString test0_string(NULL);
-	cout << test0_string << endl;
+	//MyString test0_string(NULL);
+	//cout << test0_string << endl;
 	MyString test1_string("Hello World!");
 	cout << test1_string << endl;
 	MyString test2_string("");
@@ -32,9 +32,7 @@ void char_array_test() {
 	MyString test5_string("Привет how do you do my fellow kids");
 	cout << test5_string << endl;
 	//what if longer
-	MyString test6_string("It's gonna be LEGEN--waitforitwaitforitwaitforitwaitforitwait\
-						foritwaitforitwaitforitwaitforitwaitforitwaitforitwaitforitwaitfor\
-						itwaitforitwaitforitwaitforitwaitforitwaitforitwaitforit--DARY!!!");
+	MyString test6_string("It's gonna be LEGEN--waitforitwaitforitwaitforitwaitforitwaitforitwaitforitwaitforitwaitforitwaitforitwaitforitwaitforitwaitforitwaitforitwaitforitwaitforitwaitforitwaitforitwaitforit--DARY!!!");
 	cout << test6_string << endl;
 	MyString test7_string("lawy\te\nre\0d!");
 	cout << test7_string << endl;
@@ -51,15 +49,15 @@ void init_list_test() {
 	cout << test4_string << endl;
 	//won't compile
 	// MyString test5_string({ 'l', 'i','s','t', 2.0, 'nnnn'});
-	//test5_string.print_debug_info();
+	//cout << test5_string << endl;
 	//MyString test6_string({ 4004,1217,2344,2450,765453});
-	//test6_string.print_debug_info();
+	//cout << test6_string << endl;
 	MyString test7_string({'F'});
 	cout << test7_string << endl;
 	MyString test8_string({ 'b', '\t','a','\n','z', 'i', 'n', 'g', 'a'});
 	cout << test8_string << endl;
 	//MyString test9_string({ NULL });
-	//test9_string.print_debug_info();
+	//cout << test9_string << endl;
 }
 
 void std_string_test() {
@@ -75,10 +73,10 @@ void std_string_test() {
 	//won't allow assignment zero to string calls exception
 	//string test_std_string2 = 0;
 	//MyString test4_string(test_std_string2);
-	//test4_string.print_debug_info();
+	//cout << test4_string << endl;
 	//string test_std_string3 = NULL;
 	//MyString test5_string(test_std_string3);
-	//test5_string.print_debug_info();
+	//cout << test5_string << endl;
 	test_std_string1 = "bangtan\tsonyeon\0dan";
 	MyString test6_string(test_std_string1);
 	cout << test6_string << endl;
@@ -97,17 +95,17 @@ void char_n_array_test() {
 	cout << test5_string << endl;
 	MyString test6_string("Queen", -9);
 	cout << test6_string << endl;
-	MyString test7_string("Queen", INT_MAX);
+	MyString test7_string("Queen", ULLONG_MAX);
 	cout << test7_string << endl;
 	MyString test8_string("Queen", 9);
 	cout << test8_string << endl;
 #if DEBUG_WITH_LIMITS
-	MyString test9_string("Queen", UINT_MAX - 1);
+	MyString test9_string("Queen", ULLONG_MAX - 2);
 	cout << test9_string << endl;
 #endif
 	//won't compile
 	//MyString test10_string(NULL, 9);
-	//test10_string.print_debug_info();
+	//cout << test10_string << endl;
 }
 
 void n_chars_test() {
@@ -121,14 +119,14 @@ void n_chars_test() {
 	cout << test4_string << endl;
 	MyString test5_string(0, 'F');
 	cout << test5_string << endl;
-	MyString test6_string(-1, 'F');
-	cout << test6_string << endl;
+	//MyString test6_string(-1, 'F');
+	//cout << test6_string << endl;
 	MyString test7_string(4, '\0');
 	cout << test7_string << endl;
-	MyString test8_string(INT_MAX, 'F');
-	cout << test8_string << endl;
+	//MyString test8_string(ULLONG_MAX, 'F');
+	//cout << test8_string << endl;
 #if DEBUG_WITH_LIMITS
-	MyString test9_string(UINT_MAX-1, 'F');
+	MyString test9_string(ULLONG_MAX -2, 'F');
 	cout << test9_string << endl;
 #endif
 }
@@ -162,18 +160,18 @@ void opertr_plus() {
 	MyString test7_string(""), test8_string("Sonyeondan"), test9_string;
 	test9_string = test7_string + test8_string;
 	cout << test9_string << endl;
-	MyString test10_string(""), test11_string(""), test12_string;
-	test12_string = test10_string + test11_string;
-	cout << test12_string << endl;
+	//MyString test10_string(""), test11_string(""), test12_string;
+	//test12_string = test10_string + test11_string;
+	//cout << test12_string << endl;
 	MyString test13_string("\0"), test14_string("Sonyeandan"), test15_string;
 	test15_string = test13_string + test14_string;
 	cout << test15_string << endl;
 	MyString test16_string("Bangtan"), test17_string("\0"), test18_string;
 	test18_string = test16_string + test17_string;
 	cout << test18_string << endl;
-	MyString test19_string("\0"), test20_string("\0"), test21_string;
-	test21_string = test19_string + test20_string;
-	cout << test21_string << endl;
+	//MyString test19_string("\0"), test20_string("\0"), test21_string;
+	//test21_string = test19_string + test20_string;
+	//cout << test21_string << endl;
 	MyString test22_string = ("Bangtan"), test23_string;
 	test23_string = test22_string + "Sonyendan";
 	cout << test23_string << endl;
@@ -187,12 +185,12 @@ void opertr_plus() {
 	string str2 = "\0";
 	test27_string = test26_string + str2;
 	cout << test27_string << endl;
-	MyString test28_string(NULL), test29_string(NULL), test30_string;
-	test30_string = test28_string + test29_string;
-	cout << test30_string << endl;
-	MyString test31_string(NULL), test32_string("Hello!"), test33_string;
-	test33_string = test31_string + test32_string;
-	cout << test33_string << endl;
+	//MyString test28_string(NULL), test29_string(NULL), test30_string;
+	//test30_string = test28_string + test29_string;
+	//cout << test30_string << endl;
+	//MyString test31_string(NULL), test32_string("Hello!"), test33_string;
+	//test33_string = test31_string + test32_string;
+	//cout << test33_string << endl;
 }
 
 void opertr_plus_equal() {
@@ -202,8 +200,8 @@ void opertr_plus_equal() {
 	test1_string += ", Gratia plena!";
 	cout << test1_string << endl;
 	MyString test2_string;
-	test2_string += NULL;
-	cout << test2_string << endl;
+	//test2_string += NULL;
+	//cout << test2_string << endl;
 	test2_string += "Dominus tecum";
 	cout << test2_string << endl;
 	test2_string += "";
@@ -252,8 +250,8 @@ void opertr_equal() {
 	test2_string = str2;
 	cout << test2_string << endl;
 	MyString test3_string;
-	test3_string = '\0'; //null pointer
-	cout << test3_string << endl;
+	//test3_string = '\0'; //null pointer
+	//cout << test3_string << endl;
 	test3_string = 'F';
 	cout << test3_string << endl;
 	test3_string = 'NULL';
@@ -347,22 +345,38 @@ void run_single_tests() {
 	//cout << "Clear is done." << endl;
 	//printf_s("Data of the string: %s\n", test1_string.data());
 	//printf_s("Size : %i\tLength: %i\tCapacity: %i\n", test1_string.size(), test1_string.length(), test1_string.capacity());
-	MyString test("Hello, world!");
-	//cout << "\tData: " << test.data() << endl;
+	//MyString test("Hello, world!");
+	//cout << "Data: " << test.data() << endl;
 	//cout << "Capacitiy: " << test.capacity() << endl;
 	////for shrink to fit do all test where malloc/crealloc funcs is
 	////realloc does do \0 everywhere?
-	//test.clear2();
+	//test.clear();
+	//cout << "Clear is done." << endl;
 	//cout <<  "Capacitiy: " << test.capacity() << endl;
 	//test.shrink_to_fit();
 	///*
 	//* shrink to fit nothing change, 1char, 0 value
 	//*/
 	//cout << "Shrinkage done." << endl << "Capacitiy: " << test.capacity() << endl;
-	cout << test << endl;
-	MyString test1;
-	cin >> test1;
-	cout << test1 << endl;
+	//cout << test << endl;
+	//MyString test1;
+	//cin >> test1;
+	//cout << test1 << endl;
+	
+	//test cin to capacity
+	MyString test1_string;
+	//empty string
+	cout << test1_string << endl;
+	////"Bang"
+	//cin >> test1_string;
+	//cout << test1_string << endl;
+	////"Bangtan"
+	//cin >> test1_string;
+	//cout << test1_string << endl;
+	////"bts", '\n' do not work it is impossible to cin empty string 
+	//cin >> test1_string;
+	//cout << test1_string << endl;
+
 }
 
 void run_insert_tests() {
@@ -479,5 +493,4 @@ void run_find_tests() {
 
 	i = a.find(s, 7);
 	std::cout << i << std::endl;
-
 }
