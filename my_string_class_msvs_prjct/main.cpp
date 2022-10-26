@@ -5,5 +5,10 @@
 
 int main() {
 	setlocale(LC_ALL, "");
+
+	MyString a1 = "hello amazing world", a2;
+
+	a2 = a1.substr(6);
+
 	return 0;
 }

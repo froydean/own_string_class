@@ -471,7 +471,7 @@ namespace UnitTest1
 			Assert::AreEqual(false, test1_string < test2_string);
 			Assert::AreEqual(true, test1_string <= test2_string);
 
-			test1_string = '\0';
+			test1_string = '\0'; //eq ok, but can't const MyString test1_string = '\0';
 			test2_string = "guenchana";
 			Assert::AreEqual(false, test1_string == test2_string);
 			Assert::AreEqual(true, test1_string != test2_string);
@@ -479,139 +479,456 @@ namespace UnitTest1
 			Assert::AreEqual(false, test1_string >= test2_string);
 			Assert::AreEqual(true, test1_string < test2_string);
 			Assert::AreEqual(true, test1_string <= test2_string);
+
+			test1_string = "Hello";
+			MyString* my_string_object3 = NULL;
+			Assert::AreEqual(false, test1_string == *my_string_object3);
+			Assert::AreEqual(false, test1_string != *my_string_object3);
+			Assert::AreEqual(false, test1_string > *my_string_object3);
+			Assert::AreEqual(false, test1_string >= *my_string_object3);
+			Assert::AreEqual(false, test1_string < *my_string_object3);
+			Assert::AreEqual(false, test1_string <= *my_string_object3);
 		}
 
 		TEST_METHOD(single_test)
 		{
 			//do more pretty
 			MyString test1_string("Hello, world!");
+
 			Assert::AreEqual("Hello, world!", test1_string.c_str());
 			Assert::AreEqual("Hello, world!", test1_string.data());
 			Assert::AreEqual((size_t)13, test1_string.size());
 			Assert::AreEqual((size_t)13, test1_string.length());
 			Assert::AreEqual((size_t)14, test1_string.capacity());
 			Assert::AreEqual(false, test1_string.empty());
-			//add movement
-			test1_string.shrink_to_fit();
-			CHECK_DATA_LEN_CAP(test1_string, "Hello, world!", 13, 14)
-			test1_string.clear();
-			CHECK_DATA_LEN_CAP(test1_string, "", 0, 14)
-			test1_string.shrink_to_fit();
-			CHECK_DATA_LEN_CAP(test1_string, "", 0, 1)
-			//MyString test2_string;
-			//cin >> test2_string;
-			////test cin to capacity
-			//MyString test3_string;
-			////empty string
-			//cout << test3_string << endl;
-			////"Bang"
-			//cin >> test3_string;
-			//cout << test3_string << endl;
-			////"Bangtan"
-			//cin >> test3_string;
-			//cout << test3_string << endl;
-			////"bts", '\n' do not work it is impossible to cin empty string 
-			//cin >> test3_string;
-			//cout << test3_string << endl;
+
+			test1_string = "";
+			Assert::AreEqual(true, test1_string.empty());
+
+			test1_string = '\0';
+			Assert::AreEqual(true, test1_string.empty());
 		}
 
-		TEST_METHOD(ins_test)
+		TEST_METHOD(shrink_test)
 		{
-			//sym null
-			//sym ""
+			MyString test1_string;
+			test1_string.shrink_to_fit();
+			CHECK_DATA_LEN_CAP(test1_string, NULL, 0, 0)
+
+			MyString test2_string("\0");
+			test2_string.shrink_to_fit();
+			CHECK_DATA_LEN_CAP(test2_string, "", 0, 1)
+
+			test1_string = "Hello";
+			test1_string.shrink_to_fit();
+			CHECK_DATA_LEN_CAP(test1_string, "Hello", 5, 6)
+
+			test1_string = "H";
+			test1_string.shrink_to_fit();
+			CHECK_DATA_LEN_CAP(test1_string, "H", 1, 2)
+			
+			test1_string = "Hello, world!";
+			test1_string.erase(5, 8);
+			test1_string.shrink_to_fit();
+			CHECK_DATA_LEN_CAP(test1_string, "Hello", 5, 6)
+
+			test1_string.clear();
+			test1_string.shrink_to_fit();
+			CHECK_DATA_LEN_CAP(test1_string, "", 0, 1)
+		}
+
+		TEST_METHOD(clear_test)
+		{
+			MyString test1_string;
+			test1_string.clear();
+			CHECK_DATA_LEN_CAP(test1_string, NULL, 0, 0)
+
+			MyString test2_string("\0");
+			test1_string.clear();
+			CHECK_DATA_LEN_CAP(test2_string, "", 0, 1)
+			
+			test2_string = "Shut Down";
+			test2_string.clear();
+			CHECK_DATA_LEN_CAP(test2_string, "", 0, 10)
+		}
+
+		TEST_METHOD(cap_test)
+		{
+			MyString test1_string;
+			CHECK_DATA_LEN_CAP(test1_string, NULL, 0, 0)
+
+			MyString test2_string("\0");
+			CHECK_DATA_LEN_CAP(test2_string, "", 0, 1)
+
+			test1_string = "Bangtan";
+			CHECK_DATA_LEN_CAP(test1_string, "Bangtan", 7, 8)
+
+			test1_string = "tan";
+			CHECK_DATA_LEN_CAP(test1_string, "tan", 3, 8)
+
+			test1_string = "Bangtan Sonyeondan";
+			CHECK_DATA_LEN_CAP(test1_string, "Bangtan Sonyeondan", 18, 19)
+
+			test1_string.erase(17, 1);
+			CHECK_DATA_LEN_CAP(test1_string, "Bangtan Sonyeonda", 17, 19)
+
+			test1_string.clear();
+			CHECK_DATA_LEN_CAP(test1_string, "", 0, 19)
+		}
+
+		TEST_METHOD(cout_test)
+		{
+			string expected = "Hello World! 12 13\nString has null pointer\nNULL pointer of object.\n";
+			stringstream buffer;
+			streambuf* sbuf = cout.rdbuf(); // Save cout's buffer
+			cout.rdbuf(buffer.rdbuf()); // Redirect cout to the stringstream buffer
+
+			//test
+			MyString test1_string("Hello World!");
+			cout << test1_string << endl;
+
+			MyString test2_string;
+			cout << test2_string << endl;
+
+			MyString* my_string_object3 = NULL;
+			cout << *my_string_object3 << endl;
+
+			// When finished, redirect cout to the original buffer 
+			cout.rdbuf(sbuf);
+			cout << "std original buffer: \n";
+			cout << buffer.get();
+
+			// Test
+			Assert::AreEqual(expected, buffer.str());
+		}
+
+		TEST_METHOD(cin_test)
+		{
+			MyString test1_string;
+			istringstream in("HelloWorld!");
+
+			in >> test1_string;
+			CHECK_DATA_LEN_CAP(test1_string, "HelloWorld!", 11, 12)
+
+			MyString test2_string("\0");
+			istringstream in2("Bang");
+			in2 >> test2_string;
+			CHECK_DATA_LEN_CAP(test2_string, "Bang", 4, 5)
+
+			istringstream in3("Bangtan");
+			in3 >> test2_string;
+			CHECK_DATA_LEN_CAP(test2_string, "Bangtan", 7, 8)
+
+			istringstream in4("bts");//impossible to cin empty string
+			in4 >> test2_string;
+			CHECK_DATA_LEN_CAP(test2_string, "bts", 3, 8)
+
+
+			string expected = "NULL pointer of object.\n";
+			stringstream buffer;
+			streambuf* sbuf = cout.rdbuf(); // Save cout's buffer
+			cout.rdbuf(buffer.rdbuf()); // Redirect cout to the stringstream buffer
+
+			//test
+			MyString* my_string_object3 = NULL;
+			cin >> *my_string_object3;
+
+			// When finished, redirect cout to the original buffer 
+			cout.rdbuf(sbuf);
+			cout << "std original buffer: \n";
+			cout << buffer.get();
+
+			// Test
+			Assert::AreEqual(expected, buffer.str());
+		}
+
+		TEST_METHOD(ins_char_count_test)
+		{
+			//NULL sym
 			MyString test1_string("Hello, World!");
+			
 			test1_string.insert(2, 3, '@');
 			CHECK_DATA_LEN_CAP(test1_string, "He@@@llo, World!", 16, 17)
+			
+			test1_string.insert(4, 0, 'F');
+			CHECK_DATA_LEN_CAP(test1_string, "He@@@llo, World!", 16, 17)
+			
+			test1_string.insert(16, 1, 'F');
+			CHECK_DATA_LEN_CAP(test1_string, "He@@@llo, World!F", 17, 18)
 
+			test1_string.insert(18, 1, 'F');
+			CHECK_DATA_LEN_CAP(test1_string, "He@@@llo, World!F", 17, 18)
+
+			test1_string.insert(16, 4, '\0');
+			CHECK_DATA_LEN_CAP(test1_string, "He@@@llo, World!F", 17, 18)
+
+			MyString test2_string;
+			
+			test2_string.insert(0, 0, 'F');
+			CHECK_DATA_LEN_CAP(test2_string, NULL, 0, 0)
+
+			test2_string.insert(1, 0, 'F');
+			CHECK_DATA_LEN_CAP(test2_string, NULL, 0, 0)
+
+			test2_string.insert(0, 3, 'F');
+			CHECK_DATA_LEN_CAP(test2_string, "FFF", 3, 4)
+		}
+
+		TEST_METHOD(ins_char_array_test)
+		{
 			MyString test2_string("Hello, World!");
+
 			test2_string.insert(0, "STRING");
 			CHECK_DATA_LEN_CAP(test2_string, "STRINGHello, World!", 19, 20)
 
+			test2_string.insert(4, "\0");
+			CHECK_DATA_LEN_CAP(test2_string, "STRINGHello, World!", 19, 20)
+
+			test2_string.insert(4, "");
+			CHECK_DATA_LEN_CAP(test2_string, "STRINGHello, World!", 19, 20)
+			
+			test2_string.insert(19, "STRING");
+			CHECK_DATA_LEN_CAP(test2_string, "STRINGHello, World!STRING", 25, 26)
+
+			test2_string.insert(26, "STRING");
+			CHECK_DATA_LEN_CAP(test2_string, "STRINGHello, World!STRING", 25, 26)
+
+			MyString test1_string;
+
+			test1_string.insert(1, "FFF");
+			CHECK_DATA_LEN_CAP(test1_string, NULL, 0, 0)
+
+			test1_string.insert(0, "FFF");
+			CHECK_DATA_LEN_CAP(test1_string, "FFF", 3, 4)
+
+			test1_string.insert(0, "\0");
+			CHECK_DATA_LEN_CAP(test1_string, "FFF", 3, 4)
+		}
+
+		TEST_METHOD(ins_char_array_count_test)
+		{
 			MyString test3_string("Hello, World!");
 			test3_string.insert(1, "STRING", 3);
 			CHECK_DATA_LEN_CAP(test3_string, "HSTRello, World!", 16, 17)
 
-			string str = "STRinG";
+			MyString test2_string("Hello, World!");
 
+			test2_string.insert(0, "STRING",6);
+			CHECK_DATA_LEN_CAP(test2_string, "STRINGHello, World!", 19, 20)
+
+			test2_string.insert(4, "\0", 8);
+			CHECK_DATA_LEN_CAP(test2_string, "STRINGHello, World!", 19, 20)
+
+			test2_string.insert(4, "", 0);
+			CHECK_DATA_LEN_CAP(test2_string, "STRINGHello, World!", 19, 20)
+
+			test2_string.insert(19, "STRING", 0);
+			CHECK_DATA_LEN_CAP(test2_string, "STRINGHello, World!", 19, 20)
+
+			test2_string.insert(20, "STRING", 3);
+			CHECK_DATA_LEN_CAP(test2_string, "STRINGHello, World!", 19, 20)
+
+			MyString test1_string;
+
+			test1_string.insert(1, "FFF", 2);
+			CHECK_DATA_LEN_CAP(test1_string, NULL, 0, 0)
+
+			test1_string.insert(0, "FFF", 2);
+			CHECK_DATA_LEN_CAP(test1_string, "FF", 2, 3)
+
+			test1_string.insert(0, "\0", 1);
+			CHECK_DATA_LEN_CAP(test1_string, "FF", 2, 3)
+		}
+
+		TEST_METHOD(ins_str_test)
+		{
+			string str = "STRinG";
 			MyString test4_string("Hello, World!");
+			
 			test4_string.insert(12, str);
 			CHECK_DATA_LEN_CAP(test4_string, "Hello, WorldSTRinG!", 19, 20)
 
-			MyString test5_string("Hello, World!");
-			test5_string.insert(13, str, 3);
-			CHECK_DATA_LEN_CAP(test5_string, "Hello, World!STR", 16, 17)
+			test4_string.insert(12, str);
+			CHECK_DATA_LEN_CAP(test4_string, "Hello, WorldSTRinGSTRinG!", 25, 26)
+
+			str = "";
+			test4_string.insert(12, str);
+			CHECK_DATA_LEN_CAP(test4_string, "Hello, WorldSTRinGSTRinG!", 25, 26)
+		}
+
+		TEST_METHOD(ins_str_count_test)
+		{
+			string str = "STRinG";
+			MyString test4_string("Hello, World!");
+
+			test4_string.insert(12, str, 3);
+			CHECK_DATA_LEN_CAP(test4_string, "Hello, WorldSTR!", 16, 17)
+
+			test4_string.insert(12, str, 6);
+			CHECK_DATA_LEN_CAP(test4_string, "Hello, WorldSTRinGSTR!", 22, 23)
+
+			str = "";
+			test4_string.insert(12, str, 6);
+			CHECK_DATA_LEN_CAP(test4_string, "Hello, WorldSTRinGSTR!", 22, 23)
+
+			str = "Ave Maria!";
+			test4_string.insert(22, str, 10);
+			CHECK_DATA_LEN_CAP(test4_string, "Hello, WorldSTRinGSTR!Ave Maria!", 32, 33)
+
+			test4_string.insert(22, str, 0);
+			CHECK_DATA_LEN_CAP(test4_string, "Hello, WorldSTRinGSTR!Ave Maria!", 32, 33)
+
+			test4_string.insert(22, str, -1);
+			CHECK_DATA_LEN_CAP(test4_string, "Hello, WorldSTRinGSTR!Ave Maria!", 32, 33)
 		}
 
 		TEST_METHOD(erase_test)
 		{
 			MyString a1("Hello world!");
+			
 			a1.erase(5, 6);
 			CHECK_DATA_LEN_CAP(a1, "Hello!", 6, 13)
-			a1.shrink_to_fit();
-			CHECK_DATA_LEN_CAP(a1, "Hello!", 6, 7)
-		}
 			
-		TEST_METHOD(append_test)
+			a1.erase(12, 6);
+			CHECK_DATA_LEN_CAP(a1, "Hello!", 6, 13)
+			
+			a1.erase(1, 0);
+			CHECK_DATA_LEN_CAP(a1, "Hello!", 6, 13)
+		}
+
+		TEST_METHOD(ap_char_count_test)
 		{
 			MyString a1;
-			a1.clear();
+
 			a1.append(3, '!');
 			CHECK_DATA_LEN_CAP(a1, "!!!", 3, 4)
+
 			a1.append(3, '@');
 			CHECK_DATA_LEN_CAP(a1, "!!!@@@", 6, 7)
 
-			MyString a2;
-			a2.clear();
+			a1.append(0, '@');
+			CHECK_DATA_LEN_CAP(a1, "!!!@@@", 6, 7)
+		}
+
+		TEST_METHOD(ap_char_array_test)
+		{
+			MyString a2("\0");
+
 			a2.append("Hello ");
 			CHECK_DATA_LEN_CAP(a2, "Hello ", 6, 7)
+
 			a2.append("world");
 			CHECK_DATA_LEN_CAP(a2, "Hello world", 11, 12)
 
+			a2.append("");
+			CHECK_DATA_LEN_CAP(a2, "Hello world", 11, 12)
+		}
+
+		TEST_METHOD(ap_char_array_count_test)
+		{
 			MyString a3;
-			a3.clear();
+
 			a3.append("Hello world", 0, 6);
 			CHECK_DATA_LEN_CAP(a3, "Hello ", 6, 7)
+
 			a3.append("Hello world", 6, 5);
 			CHECK_DATA_LEN_CAP(a3, "Hello world", 11, 12)
+			
+			a3.append("Hello world", 0, 0);
+			CHECK_DATA_LEN_CAP(a3, "Hello world", 11, 12)
+		}
 
+		TEST_METHOD(ap_str_test)
+		{
 			MyString a4;
-			std::string s1 = "Hello ", s2 = "world";
-			a4.clear();
+			string s1 = "Hello ", s2 = "world", s3 = "\0";
+
 			a4.append(s1);
 			CHECK_DATA_LEN_CAP(a4, "Hello ", 6, 7)
+
 			a4.append(s2);
 			CHECK_DATA_LEN_CAP(a4, "Hello world", 11, 12)
 
+			a4.append(s3);
+			CHECK_DATA_LEN_CAP(a4, "Hello world", 11, 12)
+		}
+
+		TEST_METHOD(ap_str_count_test)
+		{
 			MyString a5;
-			std::string s3 = "Hello world";
-			a5.clear();
+			string s3 = "Hello world";
+
 			a5.append(s3, 0, 6);
 			CHECK_DATA_LEN_CAP(a5, "Hello ", 6, 7)
+			
 			a5.append(s3, 6, 5);
+			CHECK_DATA_LEN_CAP(a5, "Hello world", 11, 12)
+
+			a5.append(s3, 6, 0);
 			CHECK_DATA_LEN_CAP(a5, "Hello world", 11, 12)
 		}
 
 		TEST_METHOD(replace_test)
 		{
 			MyString a1 = "hello amazing world";
-			CHECK_DATA_LEN_CAP(a1, "hello amazing world", 19, 20)
+			
 			a1.replace(6, 7, "wonderful");
 			CHECK_DATA_LEN_CAP(a1, "hello wonderful world", 21, 22)
 
+			a1.replace(6, 9, "wonderful");
+			CHECK_DATA_LEN_CAP(a1, "hello wonderful world", 21, 22)
+
+			a1.replace(6, 0, "wonderful");
+			CHECK_DATA_LEN_CAP(a1, "hello wonderfulwonderful world", 30, 31)
+
 			MyString a2 = "hello amazing world";
 			string s1 = "wonderful";
+			
 			a2.replace(6, 7, s1);
-			CHECK_DATA_LEN_CAP(a1, "hello wonderful world", 21, 22)
+			CHECK_DATA_LEN_CAP(a2, "hello wonderful world", 21, 22)
+
+			a2.replace(6, 0, s1);
+			CHECK_DATA_LEN_CAP(a2, "hello wonderfulwonderful world", 30, 31)
+			
+			a2.replace(35, 7, s1);
+			CHECK_DATA_LEN_CAP(a2, "hello wonderfulwonderful world", 30, 31)
+
+			s1 = "\0";
+			a2.replace(6, 0, s1);
+			CHECK_DATA_LEN_CAP(a2, "hello wonderfulwonderful world", 30, 31)
 		}
 
 		TEST_METHOD(substr_test)
 		{
 			MyString a1 = "hello amazing world", a2;
+			
 			a2 = a1.substr(6);
 			CHECK_DATA_LEN_CAP(a2, "amazing world", 13, 14)
 
-			//MyString a3 = "hello amazing world", a4;
-			//a4 = a3.substr(6, 7);
+			a2 = a1.substr(0);
+			CHECK_DATA_LEN_CAP(a2, "hello amazing world", 19, 20)
+
+			a2 = a1.substr(30);
+			CHECK_DATA_LEN_CAP(a2, NULL, 0, 0)
+
+			MyString a3 = "hello amazing world", a4;
+			
+			a4 = a3.substr(6, 7);
+			CHECK_DATA_LEN_CAP(a4, "amazing", 7, 8)
+
+			a4 = a3.substr(6, 0);
+			CHECK_DATA_LEN_CAP(a4, NULL, 0, 0)
+
+			a4 = a3.substr(60, 0);
+			CHECK_DATA_LEN_CAP(a4, NULL, 0, 0)
+
+			a4 = a3.substr(6, 60);
+			CHECK_DATA_LEN_CAP(a4, NULL, 0, 0)
+
+			MyString a5, a6;
+
+			a5 = a6.substr(6);
+			CHECK_DATA_LEN_CAP(a5, NULL, 0, 0)
 		}
 
 		TEST_METHOD(find_test)
@@ -619,9 +936,21 @@ namespace UnitTest1
 			MyString a = "hello amazing world amazing";
 			Assert::AreEqual((size_t)6, a.find("amazing"));
 			Assert::AreEqual((size_t)20, a.find("amazing", 7));
-			std::string s = "amazing";
+			
+			string s = "amazing";
 			Assert::AreEqual((size_t)6, a.find(s));
 			Assert::AreEqual((size_t)20, a.find(s, 7));
+
+			MyString a1;
+			Assert::AreEqual((size_t)-1, a1.find("amazing"));
+			Assert::AreEqual((size_t)-1, a1.find("amazing", 7));
+
+			Assert::AreEqual((size_t)-1, a1.find(s));
+			Assert::AreEqual((size_t)-1, a1.find(s, 7));
+
+			s = "";
+			Assert::AreEqual((size_t)-1, a1.find(s));
+			Assert::AreEqual((size_t)-1, a1.find(s, 7));
 		}
 
 	};

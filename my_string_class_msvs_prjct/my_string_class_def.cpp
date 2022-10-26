@@ -173,6 +173,10 @@ char MyString::operator[](const size_t index) const {
 }
 
 bool MyString::operator> (const MyString & other) const {
+	if (&other == NULL) {
+		cout << "NULL pointer of object. Compare is not possible." << endl;
+		return false;
+	}
 	if (this->head_string && other.head_string) {
 		return !operator<=(other);
 	}
@@ -183,6 +187,10 @@ bool MyString::operator> (const MyString & other) const {
 }
 
 bool MyString::operator< (const MyString & other) const {
+	if (&other == NULL) {
+		cout << "NULL pointer of object. Compare is not possible." << endl;
+		return false;
+	}
 	if (this->head_string && other.head_string) {
 		return !operator>=(other);
 	}
@@ -193,6 +201,10 @@ bool MyString::operator< (const MyString & other) const {
 }
 
 bool MyString::operator>= (const MyString & other) const {
+	if (&other == NULL) {
+		cout << "NULL pointer of object. Compare is not possible." << endl;
+		return false;
+	}
 	if (this->head_string && other.head_string) {
 		for (int i = 0; i < other.string_length; i++) {
 			if (this->head_string[i] < other.head_string[i]) return false;
@@ -206,6 +218,10 @@ bool MyString::operator>= (const MyString & other) const {
 }
 
 bool MyString::operator<= (const MyString & other) const {
+	if (&other == NULL) {
+		cout << "NULL pointer of object. Compare is not possible." << endl;
+		return false;
+	}
 	if (this->head_string && other.head_string) {
 		for (int i = 0; i < this->string_length; i++) {
 			if (this->head_string[i] > other.head_string[i]) return false;
@@ -219,6 +235,10 @@ bool MyString::operator<= (const MyString & other) const {
 }
 
 bool MyString::operator!= (const MyString & other) const {
+	if (&other == NULL) {
+		cout << "NULL pointer of object. Compare is not possible." << endl;
+		return false;
+	}
 	if (this->head_string && other.head_string) {
 		return !operator==(other);
 	}
@@ -229,6 +249,10 @@ bool MyString::operator!= (const MyString & other) const {
 }
 
 bool MyString::operator== (const MyString & other) const {
+	if (&other == NULL) {
+		cout << "NULL pointer of object. Compare is not possible." << endl;
+		return false;
+	}
 	if (this->head_string && other.head_string) {
 		if (this->string_length != other.string_length) return false;
 		for (int i = 0; i < other.string_length; i++)
@@ -292,6 +316,10 @@ void MyString::clear() {
 }
 
 ostream& operator<<(ostream & out, const MyString & current_obj){
+	if (&current_obj == NULL) {
+		out << "NULL pointer of object.";
+		return out;
+	}
 	if (current_obj.head_string) {
 		out << current_obj.head_string<<" "<<current_obj.string_length<<" "<< current_obj.capacity();
 	}else
@@ -300,6 +328,10 @@ ostream& operator<<(ostream & out, const MyString & current_obj){
 }
 
 istream& operator>>(istream& in, MyString & current_obj){
+	if (&current_obj == NULL) {
+		cout << "NULL pointer of object." << endl;
+		return in;
+	}
 	char * buf = new char[ULONG_MAX];
 	in >> buf;
 	if (current_obj.head_string) {
@@ -412,15 +444,19 @@ MyString MyString::substr(const size_t index) const {
 }
 
 MyString MyString::substr(const size_t index, const size_t count) const {
+	MyString tmp;
 	if (count == 0) {
 		cout << "One element should be substracted at least." << endl;
-		return NULL;
+		return tmp;
 	}
 	if (count > this->string_length - index) {
 		cout << "Count of substracted elements is out of range." << endl;
-		return NULL;
+		return tmp;
 	}
-	MyString tmp;
+	if (index >= this->string_length) {
+		cout << "Index is out of range." << endl;
+		return tmp;
+	}
 	tmp = *this;
 	tmp.erase(0, index);
 	tmp.erase(count, this->string_length - index-count);
@@ -433,6 +469,14 @@ size_t MyString::find(const char* user_string) const {
 }
 
 size_t MyString::find(const char* user_string, const size_t index) const {
+	if (this->head_string == NULL) {
+		cout << "Empty object." << endl;
+		return -1;
+	}
+	if (user_string == NULL || user_string[0]=='\0') {
+		cout << "At list one synmbol should be in searching string." << endl;
+		return -1;
+	}
 	size_t len = strlen(user_string);
 	if (index > this->string_length - len) {
 		cout << "Index is out of range." << endl;
